@@ -1,10 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:infra="clr-namespace:ChejAppDeleteMe.Infrastructure;assembly=ChejAppDeleteMe"
              x:Class="ChejAppDeleteMe.App">
+    
 	<Application.Resources>
 
 		<!-- Application resource dictionary -->
-
+        <ResourceDictionary>
+            
+            <!-- Locator -->
+            <infra:InstanceLocator x:Key="Locator"></infra:InstanceLocator>
+            
+            <!-- Static Labels -->
+            <x:String x:Key="CompanyName">CHEJ Consultor, C.A.</x:String>
+            <x:String x:Key="CompanySlogan">- Su Requerimiento es Nuestro Compromiso -</x:String>
+            
+        </ResourceDictionary>
+        
 	</Application.Resources>
 </Application>

@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ChejAppDeleteMe.Views.MainView"
+             BindingContext="{Binding Main, Source={StaticResource Locator}}">
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10,30, 10,30">
+
+                <!-- Head -->
+                <Label HorizontalOptions="Center" 
+                   FontAttributes="Bold"
+                   FontSize="Large"
+                   Text="{StaticResource CompanyName}"
+                   VerticalOptions="Center"/>
+
+                <Label HorizontalOptions="Center"
+                   FontSize="Medium" 
+                   Text="{StaticResource CompanySlogan}"
+                   VerticalOptions="Center"/>
+
+                <Label/>
+
+                <Label FontAttributes="Bold" 
+                   FontSize="Medium" 
+                   HorizontalOptions="Center"
+                   Text="Foreign Exchange"
+                   VerticalOptions="Center"/>
+                <!-- End Head -->
+
+                <!-- Body -->
+                <StackLayout Orientation="Horizontal">
+
+                    <Label HorizontalOptions="Start" 
+                       Text="Amount:"
+                       VerticalOptions="Center"
+                       WidthRequest="80"/>
+
+                    <Entry HorizontalOptions="FillAndExpand"
+                       Keyboard="Numeric"
+                       Placeholder="Enter the amount convert...!!!" 
+                       Text=""
+                       VerticalOptions="Center"/>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+
+                    <Label HorizontalOptions="Start"
+                       Text="Source Rate:"
+                       VerticalOptions="Center"/>
+
+                    <Picker HorizontalOptions="FillAndExpand" 
+                        Title="Select source rate...!!!"
+                        VerticalOptions="Center"/>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+
+                    <Label HorizontalOptions="Start"
+                       Text="Target Rate:"
+                       VerticalOptions="Center"/>
+
+                    <Picker HorizontalOptions="FillAndExpand" 
+                        Title="Select target rate...!!!"
+                        VerticalOptions="Center"/>
+
+                </StackLayout>
+
+                <!-- End Body -->
+
+                <!-- Foot -->
+                <ActivityIndicator IsRunning="{Binding IsRunning}"/>
+
+                <Button IsEnabled="{Binding IsEnaled}" 
+                    Text="Convert"/>
+
+                <Label BackgroundColor="Gray" 
+                   HorizontalOptions="FillAndExpand"
+                   HorizontalTextAlignment="Center"
+                   Text="Text"
+                   VerticalTextAlignment="Center"
+                   VerticalOptions="FillAndExpand"/>
+
+                <!-- End Foot -->
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
