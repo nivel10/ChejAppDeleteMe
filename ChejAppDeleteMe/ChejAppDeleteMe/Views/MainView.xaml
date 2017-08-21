@@ -10,79 +10,90 @@
 
                 <!-- Head -->
                 <Label HorizontalOptions="Center" 
-                   FontAttributes="Bold"
-                   FontSize="Large"
-                   Text="{StaticResource CompanyName}"
-                   VerticalOptions="Center"/>
+                       FontAttributes="Bold"
+                       FontSize="Large"
+                       Text="{StaticResource CompanyName}"
+                       VerticalOptions="Center"/>
 
                 <Label HorizontalOptions="Center"
-                   FontSize="Medium" 
-                   Text="{StaticResource CompanySlogan}"
-                   VerticalOptions="Center"/>
+                       FontSize="Medium" 
+                       Text="{StaticResource CompanySlogan}"
+                       VerticalOptions="Center"/>
 
                 <Label/>
 
                 <Label FontAttributes="Bold" 
-                   FontSize="Medium" 
-                   HorizontalOptions="Center"
-                   Text="Foreign Exchange"
-                   VerticalOptions="Center"/>
+                       FontSize="Medium" 
+                       HorizontalOptions="Center"
+                       Text="Foreign Exchange"
+                       VerticalOptions="Center"/>
                 <!-- End Head -->
 
                 <!-- Body -->
                 <StackLayout Orientation="Horizontal">
 
                     <Label HorizontalOptions="Start" 
-                       Text="Amount:"
-                       VerticalOptions="Center"
-                       WidthRequest="80"/>
+                           Text="Amount:"
+                           VerticalOptions="Center"
+                           WidthRequest="80"/>
 
                     <Entry HorizontalOptions="FillAndExpand"
-                       Keyboard="Numeric"
-                       Placeholder="Enter the amount convert...!!!" 
-                       Text=""
-                       VerticalOptions="Center"/>
+                           IsEnabled="{Binding IsEnabled}"
+                           Keyboard="Numeric"
+                           Placeholder="Enter the amount convert...!!!" 
+                           Text="{Binding Amount, Mode=TwoWay}"
+                           VerticalOptions="Center"/>
 
                 </StackLayout>
 
                 <StackLayout Orientation="Horizontal">
 
                     <Label HorizontalOptions="Start"
-                       Text="Source Rate:"
-                       VerticalOptions="Center"/>
+                           Text="Source Rate:"
+                           VerticalOptions="Center"/>
 
                     <Picker HorizontalOptions="FillAndExpand" 
-                        Title="Select source rate...!!!"
-                        VerticalOptions="Center"/>
+                            IsEnabled="{Binding IsEnabled}"
+                            ItemDisplayBinding="{Binding Name}"
+                            ItemsSource="{Binding Rates}"
+                            SelectedItem="{Binding SourceRate, Mode=TwoWay}"
+                            Title="Select source rate...!!!"
+                            VerticalOptions="Center"/>
 
                 </StackLayout>
 
                 <StackLayout Orientation="Horizontal">
 
                     <Label HorizontalOptions="Start"
-                       Text="Target Rate:"
-                       VerticalOptions="Center"/>
+                           Text="Target Rate:"
+                           VerticalOptions="Center"/>
 
-                    <Picker HorizontalOptions="FillAndExpand" 
-                        Title="Select target rate...!!!"
-                        VerticalOptions="Center"/>
+                    <Picker HorizontalOptions="FillAndExpand"
+                            ItemDisplayBinding="{Binding Name}"
+                            ItemsSource="{Binding Rates}"
+                            IsEnabled="{Binding IsEnabled}"
+                            SelectedItem="{Binding TargetRate, Mode=TwoWay}"
+                            Title="Select target rate...!!!"
+                            VerticalOptions="Center"/>
 
                 </StackLayout>
 
                 <!-- End Body -->
 
                 <!-- Foot -->
-                <ActivityIndicator IsRunning="{Binding IsRunning}"/>
+                <ActivityIndicator IsRunning="{Binding IsRunning, Mode=TwoWay}"/>
 
-                <Button IsEnabled="{Binding IsEnaled}" 
-                    Text="Convert"/>
+                <Button Command="{Binding ConvertCommand}" 
+                        IsEnabled="{Binding IsEnabled}" 
+                        Text="Convert"/>
 
-                <Label BackgroundColor="Gray" 
-                   HorizontalOptions="FillAndExpand"
-                   HorizontalTextAlignment="Center"
-                   Text="Text"
-                   VerticalTextAlignment="Center"
-                   VerticalOptions="FillAndExpand"/>
+                <Label BackgroundColor="Gray"
+                       FontSize="Medium"
+                       HorizontalOptions="FillAndExpand"
+                       HorizontalTextAlignment="Center"
+                       Text="{Binding Result}"
+                       VerticalTextAlignment="Center"
+                       VerticalOptions="FillAndExpand"/>
 
                 <!-- End Foot -->
 

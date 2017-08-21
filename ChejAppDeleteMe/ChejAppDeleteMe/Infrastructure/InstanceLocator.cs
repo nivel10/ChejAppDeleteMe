@@ -6,7 +6,7 @@
     {
         #region Properties
 
-        private MainViewModel Main
+        public MainViewModel Main
         {
             get;
             set;
