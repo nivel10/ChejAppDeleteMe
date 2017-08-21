@@ -7,6 +7,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Linq;
     using System.Windows.Input;
 
     public class MainViewModel : INotifyPropertyChanged
@@ -24,6 +25,14 @@
             get { return new RelayCommand(Convert); }
         }
 
+        public ICommand ClearCommand
+        {
+            get
+            {
+                return new RelayCommand(Clear);
+            }
+        }
+
         #endregion Commands
 
         #region Attributes
@@ -33,9 +42,10 @@
         private bool _isEnabled;
         private bool _isRunning;
         private string _result;
-        private List<Rate> _rate;
-        private string _sourceRate;
-        private string _targetRate;
+        //  private List<Rate> _rate;
+        private ObservableCollection<Rate> _rates;
+        //private string _sourceRate;
+        //private string _targetRate;
         private ApiService apiService;
         private DialogService dialogService;
 
@@ -62,8 +72,18 @@
         //  Se crea ObservableCollection para qeu los cambios que se hagan en la lista (List<Rate>) sean observable por el usuario  \\
         public ObservableCollection<Rate> Rates
         {
-            get;
-            set;
+            get
+            {
+                return _rates;
+            }
+            set
+            {
+                if (value != _rates)
+                {
+                    _rates = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Rates)));
+                }
+            }    
         }
 
         public Rate SourceRate
@@ -162,8 +182,9 @@
             apiService = new ApiService();
             dialogService = new DialogService();
 
-            _messageResult = "Enter an mount, select source rate, ";
-            _messageResult += "select target rate and press convert button";
+            //_messageResult = "Enter an mount, select source rate, ";
+            //_messageResult += "select target rate and press convert button";
+            _messageResult = "Ready to convert...!!!";
 
             //  Instancia de los ObservableCollection   \\
             Rates = new ObservableCollection<Rate>();
@@ -200,12 +221,12 @@
                 Result = _messageResult;
 
                 //  Captura el objeto List<Rate>    \\
-                _rate = (List<Rate>)response.Result;
+                //_rate = (List<Rate>)response.Result;
 
                 //  invoca el metodo que hace la carga de datos de las tasas (Rate) \\
-                ReloadRates(_rate);
+                ReloadRates((List<Rate>)response.Result);
 
-                await dialogService.ShowMessage("Information", "CHEJ Consultor, C.A.", "Accept");
+                //  await dialogService.ShowMessage("Information", "CHEJ Consultor, C.A.", "Accept");
             }
             catch (Exception ex)
             {
@@ -223,7 +244,7 @@
         {
             Rates.Clear();
 
-            foreach (var rate in rates)
+            foreach (var rate in rates.OrderBy(r => r.Name))
             {
                 Rates.Add(new Rate
                 {
@@ -233,6 +254,16 @@
                     TaxRate = rate.TaxRate,
                 });
             }
+        }
+
+        private async void Clear()
+        {
+            LoadRates();
+            Result = _messageResult;
+            Amount = null;
+            SourceRate = null;
+            TargetRate = null;
+            await dialogService.ShowMessage("Information", "Screen is initailiced", "Accept");
         }
 
         private async void Convert()
@@ -252,11 +283,22 @@
                     return;
                 }
 
-                //if (string.IsNullOrEmpty(SourceRate) || int.Parse(SourceRate) == 0)
-                //{
-                //    await dialogService.ShowMessage("Error", "Select source rate...!!!", "Accept");
-                //    return;
-                //}
+                if (SourceRate == null || string.IsNullOrEmpty(SourceRate.RateId.ToString()) || SourceRate.RateId == 0)
+                {
+                    await dialogService.ShowMessage("Error", "Select source rate...!!!", "Accept");
+                    return;
+                }
+
+                if (TargetRate == null || string.IsNullOrEmpty(TargetRate.RateId.ToString()) || TargetRate.RateId == 0)
+                {
+                    await dialogService.ShowMessage("Error", "Select target rate...!!!", "Accept");
+                    return;
+                }
+
+                //  Calculo final de la conversion  \\
+                var amountConverted = (amount / (decimal)SourceRate.TaxRate) * (decimal)TargetRate.TaxRate;
+                Result = string.Format("The amount: {0:N2} {1} is equal to: {2:N2} {3}", amount, SourceRate.Name.Trim(), amountConverted, TargetRate.Name.Trim()); 
+
             }
             catch (Exception ex)
             {

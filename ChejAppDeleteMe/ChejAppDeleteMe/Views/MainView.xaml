@@ -11,8 +11,8 @@
                     Android="10,30,10,30"
                     WinPhone="10,30,10,30"/>
     </ContentPage.Padding>
-    
-    
+
+
     <ContentPage.Content>
         <ScrollView>
             <!-- <StackLayout Padding="10,30, 10,30"> -->
@@ -93,9 +93,19 @@
                 <!-- Foot -->
                 <ActivityIndicator IsRunning="{Binding IsRunning, Mode=TwoWay}"/>
 
-                <Button Command="{Binding ConvertCommand}" 
-                        IsEnabled="{Binding IsEnabled}" 
-                        Text="Convert"/>
+                <StackLayout Orientation="Horizontal" 
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center">
+
+                    <Button Command="{Binding ConvertCommand}" 
+                            IsEnabled="{Binding IsEnabled}" 
+                            Text="Convert"/>
+
+                    <Button Command="{Binding ClearCommand}" 
+                            Text="Clear"
+                            IsEnabled="{Binding IsEnabled}"/>
+
+                </StackLayout>
 
                 <Label BackgroundColor="Gray"
                        FontSize="Medium"
