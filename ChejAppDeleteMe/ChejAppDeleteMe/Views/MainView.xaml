@@ -4,9 +4,19 @@
              x:Class="ChejAppDeleteMe.Views.MainView"
              BindingContext="{Binding Main, Source={StaticResource Locator}}">
 
+    <!-- Esta propiedad permite los margenes en diferentes plataformas mediante XAML-->
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness"
+                    iOS="20,30,20,10"
+                    Android="10,30,10,30"
+                    WinPhone="10,30,10,30"/>
+    </ContentPage.Padding>
+    
+    
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Padding="10,30, 10,30">
+            <!-- <StackLayout Padding="10,30, 10,30"> -->
+            <StackLayout>
 
                 <!-- Head -->
                 <Label HorizontalOptions="Center" 

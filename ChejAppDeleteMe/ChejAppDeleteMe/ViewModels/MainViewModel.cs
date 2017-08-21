@@ -28,6 +28,7 @@
 
         #region Attributes
 
+        private string _messageResult;
         private string _amount;
         private bool _isEnabled;
         private bool _isRunning;
@@ -42,11 +43,6 @@
 
         #region Properties
 
-        public ObservableCollection<Rate> Rates
-        {
-            get; set;
-        }
-
         public string Amount
         {
             get
@@ -58,9 +54,54 @@
                 if (value != _amount)
                 {
                     _amount = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Amount"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Amount)));
                 }
             }
+        }
+
+        //  Se crea ObservableCollection para qeu los cambios que se hagan en la lista (List<Rate>) sean observable por el usuario  \\
+        public ObservableCollection<Rate> Rates
+        {
+            get;
+            set;
+        }
+
+        public Rate SourceRate
+        {
+            get;
+            set;
+
+            //get
+            //{
+            //    return _sourceRate;
+            //}
+            //set
+            //{
+            //    if (value != _sourceRate)
+            //    {
+            //        _sourceRate = value;
+            //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SourceRate)));
+            //    }
+            //}
+        }
+
+        public Rate TargetRate
+        {
+            get;
+            set;
+
+            //get
+            //{
+            //    return _targetRate;
+            //}
+            //set
+            //{
+            //    if (value != _targetRate)
+            //    {
+            //        _targetRate = value;
+            //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TargetRate)));
+            //    }
+            //}
         }
 
         public bool IsEnabled
@@ -74,7 +115,7 @@
                 if (value != _isEnabled)
                 {
                     _isEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsEnabled"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsEnabled)));
                 }
             }
         }
@@ -90,7 +131,7 @@
                 if (value != _isRunning)
                 {
                     _isRunning = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsRunning"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRunning)));
                 }
             }
         }
@@ -106,39 +147,7 @@
                 if (value != _result)
                 {
                     _result = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Result"));
-                }
-            }
-        }
-
-        public string SourceRate
-        {
-            get
-            {
-                return _sourceRateId;
-            }
-            set
-            {
-                if (value != _sourceRateId)
-                {
-                    _sourceRateId = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SourceRateId"));
-                }
-            }
-        }
-
-        public string  TargetRate
-        {
-            get
-            {
-                return _targetRateId;
-            }
-            set
-            {
-                if (value != _targetRateId)
-                {
-                    _targetRateId = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TargetRateId"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Result)));
                 }
             }
         }
@@ -153,8 +162,8 @@
             apiService = new ApiService();
             dialogService = new DialogService();
 
-            Result = "Enter an mount, select source rate, ";
-            Result += "select target rate and press convert button";
+            _messageResult = "Enter an mount, select source rate, ";
+            _messageResult += "select target rate and press convert button";
 
             //  Instancia de los ObservableCollection   \\
             Rates = new ObservableCollection<Rate>();
@@ -173,6 +182,7 @@
             {
                 IsEnabled = false;
                 IsRunning = true;
+                Result = "Loading rates, please wait...!!!";
 
                 //  Invoca el metodo que hace la busqueda de las tasas  (Rates) \\
                 var response = await apiService.GetRates();
@@ -186,6 +196,8 @@
 
                 IsEnabled = true;
                 IsRunning = false;
+
+                Result = _messageResult;
 
                 //  Captura el objeto List<Rate>    \\
                 _rate = (List<Rate>)response.Result;
@@ -240,11 +252,11 @@
                     return;
                 }
 
-                if (string.IsNullOrEmpty(SourceRateId) || int.Parse(SourceRateId) == 0)
-                {
-                    await dialogService.ShowMessage("Error", "Select source rate...!!!", "Accept");
-                    return;
-                }
+                //if (string.IsNullOrEmpty(SourceRate) || int.Parse(SourceRate) == 0)
+                //{
+                //    await dialogService.ShowMessage("Error", "Select source rate...!!!", "Accept");
+                //    return;
+                //}
             }
             catch (Exception ex)
             {
